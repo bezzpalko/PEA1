@@ -4,10 +4,12 @@
 #include <iomanip>
 #include <climits>
 
+using namespace std;
+
 TSPAlgorithm::TSPAlgorithm()
     : bestCost(INT_MAX), executionTimeNs(0) {}
 
-const std::vector<int>& TSPAlgorithm::getBestPath() const {
+const vector<int>& TSPAlgorithm::getBestPath() const {
     return bestPath;
 }
 
@@ -21,31 +23,31 @@ long long TSPAlgorithm::getLastExecutionTimeNs() const {
 
 void TSPAlgorithm::printResults() const {
     if (bestPath.empty()) {
-        std::cout << "Blad: algorytm nie zostal jeszcze uruchomiony." << std::endl;
+        cout << "Blad: algorytm nie zostal jeszcze uruchomiony." << endl;
         return;
     }
 
-    std::cout << "Wyniki: " << getName() << std::endl;
-    std::cout << "Trasa: ";
-    for (int i = 0; i < static_cast<int>(bestPath.size()); ++i) {
-        std::cout << bestPath[i];
-        if (i < static_cast<int>(bestPath.size()) - 1) std::cout << " -> ";
+    cout << "Wyniki: " << getName() << endl;
+    cout << "Trasa: ";
+    for (int i = 0; i < bestPath.size(); ++i) {
+        cout << bestPath[i];
+        if (i < bestPath.size() - 1) cout << " -> ";
     }
-    std::cout << std::endl;
-    std::cout << "Koszt:  " << bestCost << std::endl;
+    cout << endl;
+    cout << "Koszt:  " << bestCost << endl;
 
     // Wyswietlenie czasu w najbardziej czytelnej jednostce
     if (executionTimeNs < 1000LL) {
-        std::cout << "Czas:   " << executionTimeNs << " ns" << std::endl;
+        cout << "Czas:   " << executionTimeNs << " ns" << endl;
     } else if (executionTimeNs < 1000000LL) {
-        std::cout << "Czas:   " << std::fixed << std::setprecision(3)
-                  << executionTimeNs / 1000.0 << " us" << std::endl;
+        cout << "Czas:   " << fixed << setprecision(3)
+                  << executionTimeNs / 1000.0 << " us" << endl;
     } else if (executionTimeNs < 1000000000LL) {
-        std::cout << "Czas:   " << std::fixed << std::setprecision(3)
-                  << executionTimeNs / 1000000.0 << " ms" << std::endl;
+        cout << "Czas:   " << fixed << setprecision(3)
+                  << executionTimeNs / 1000000.0 << " ms" << endl;
     } else {
-        std::cout << "Czas:   " << std::fixed << std::setprecision(4)
-                  << executionTimeNs / 1000000000.0 << " s" << std::endl;
+        cout << "Czas:   " << fixed << setprecision(4)
+                  << executionTimeNs / 1000000000.0 << " s" << endl;
     }
 }
 
@@ -55,9 +57,9 @@ void TSPAlgorithm::reset() {
     executionTimeNs = 0;
 }
 
-int TSPAlgorithm::calculatePathCost(const std::vector<int>& path, const Graph& graph) const {
+int TSPAlgorithm::calculatePathCost(const vector<int>& path, const Graph& graph) const {
     int cost = 0;
-    int n = static_cast<int>(path.size());
+    int n = (path.size());
 
     for (int i = 0; i < n - 1; ++i) {
         int edge = graph.getEdge(path[i], path[i + 1]);

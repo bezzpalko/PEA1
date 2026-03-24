@@ -4,15 +4,22 @@
 #include <iomanip>
 #include <stdexcept>
 
-Graph::Graph() : size(0), valid(false) {}
+using namespace std;
 
-Graph::Graph(int n) : size(n), valid(false) {
+Graph::Graph() {
+    this->size = 0;
+    this->valid = false;
+}
+
+Graph::Graph(int n) {
+    this->size = n;
+    this->valid = false;
     initMatrix(n);
 }
 
 void Graph::initMatrix(int n) {
     // Alokacja dynamiczna macierzy N x N
-    matrix.assign(n, std::vector<int>(n, 0));
+    matrix.assign(n, vector<int>(n, 0));
     // Ustawienie przekatnej na -1 (brak polaczenia z samym soba)
     for (int i = 0; i < n; ++i) {
         matrix[i][i] = -1;
@@ -20,10 +27,10 @@ void Graph::initMatrix(int n) {
     size = n;
 }
 
-bool Graph::loadFromFile(const std::string& filename) {
-    std::ifstream file(filename);
+bool Graph::loadFromFile(const string& filename) {
+    ifstream file(filename);
     if (!file.is_open()) {
-        std::cerr << "Blad: nie mozna otworzyc pliku: " << filename << std::endl;
+        cerr << "Blad: nie mozna otworzyc pliku: " << filename << endl;
         valid = false;
         return false;
     }
@@ -32,7 +39,7 @@ bool Graph::loadFromFile(const std::string& filename) {
     file >> n;
 
     if (n <= 0) {
-        std::cerr << "Blad: nieprawidlowy rozmiar grafu w pliku: " << n << std::endl;
+        cerr << "Blad: nieprawidlowy rozmiar grafu w pliku: " << n << endl;
         valid = false;
         return false;
     }
@@ -42,7 +49,7 @@ bool Graph::loadFromFile(const std::string& filename) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
             if (!(file >> matrix[i][j])) {
-                std::cerr << "Blad: nieoczekiwany koniec pliku podczas wczytywania macierzy." << std::endl;
+                cerr << "Blad: nieoczekiwany koniec pliku podczas wczytywania macierzy." << endl;
                 valid = false;
                 return false;
             }
@@ -51,14 +58,14 @@ bool Graph::loadFromFile(const std::string& filename) {
 
     file.close();
     valid = true;
-    std::cout << "Wczytano graf rozmiaru " << n << " x " << n
-              << " z pliku: " << filename << std::endl;
+    cout << "Wczytano graf rozmiaru " << n << " x " << n
+              << " z pliku: " << filename << endl;
     return true;
 }
 
 void Graph::generateRandom(int n, int minWeight, int maxWeight) {
     if (n <= 0 || minWeight > maxWeight) {
-        std::cerr << "Blad: nieprawidlowe parametry generowania grafu." << std::endl;
+        cerr << "Blad: nieprawidlowe parametry generowania grafu." << endl;
         valid = false;
         return;
     }
@@ -66,9 +73,9 @@ void Graph::generateRandom(int n, int minWeight, int maxWeight) {
     initMatrix(n);
 
     // Uzywamy Mersenne Twister dla dobrej jakosci losowosci
-    std::random_device rd;
-    std::mt19937 rng(rd());
-    std::uniform_int_distribution<int> dist(minWeight, maxWeight);
+    random_device rd;
+    mt19937 rng(rd());
+    uniform_int_distribution<int> dist(minWeight, maxWeight);
 
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
@@ -80,44 +87,44 @@ void Graph::generateRandom(int n, int minWeight, int maxWeight) {
     }
 
     valid = true;
-    std::cout << "Wygenerowano losowy graf asymetryczny rozmiaru "
-              << n << " x " << n << std::endl;
+    cout << "Wygenerowano losowy graf asymetryczny rozmiaru "
+              << n << " x " << n << endl;
 }
 
 void Graph::display() const {
     if (!valid) {
-        std::cout << "Blad: graf nie zostal wczytany ani wygenerowany." << std::endl;
+        cout << "Blad: graf nie zostal wczytany ani wygenerowany." << endl;
         return;
     }
 
-    std::cout << "Macierz kosztow (N = " << size << "):\n";
-    std::cout << std::string(size * 6 + 4, '-') << "\n";
+    cout << "Macierz kosztow (N = " << size << "):\n";
+    cout << string(size * 6 + 4, '-') << "\n";
 
     // Naglowek kolumn
-    std::cout << "     ";
+    cout << "     ";
     for (int j = 0; j < size; ++j) {
-        std::cout << std::setw(5) << j;
+        cout << setw(5) << j;
     }
-    std::cout << "\n" << std::string(size * 6 + 4, '-') << "\n";
+    cout << "\n" << string(size * 6 + 4, '-') << "\n";
 
     // Wiersze macierzy
     for (int i = 0; i < size; ++i) {
-        std::cout << std::setw(3) << i << " |";
+        cout << setw(3) << i << " |";
         for (int j = 0; j < size; ++j) {
             if (matrix[i][j] == -1) {
-                std::cout << std::setw(5) << "-1";
+                cout << setw(5) << "-1";
             } else {
-                std::cout << std::setw(5) << matrix[i][j];
+                cout << setw(5) << matrix[i][j];
             }
         }
-        std::cout << "\n";
+        cout << "\n";
     }
-    std::cout << std::string(size * 6 + 4, '-') << "\n";
+    cout << string(size * 6 + 4, '-') << "\n";
 }
 
 int Graph::getEdge(int from, int to) const {
     if (from < 0 || from >= size || to < 0 || to >= size) {
-        throw std::out_of_range("Blad: indeks krawedzi poza zakresem macierzy.");
+        throw out_of_range("Blad: indeks krawedzi poza zakresem macierzy.");
     }
     return matrix[from][to];
 }
@@ -126,7 +133,7 @@ int Graph::getSize() const {
     return size;
 }
 
-const std::vector<std::vector<int>>& Graph::getMatrix() const {
+const vector<vector<int>>& Graph::getMatrix() const {
     return matrix;
 }
 

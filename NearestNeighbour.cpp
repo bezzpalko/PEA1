@@ -3,7 +3,9 @@
 #include <climits>
 #include <vector>
 
-std::string NearestNeighbour::getName() const {
+using namespace std;
+
+string NearestNeighbour::getName() const {
     return "Nearest Neighbour (zachlanny)";
 }
 
@@ -21,12 +23,11 @@ void NearestNeighbour::solve(const Graph& graph) {
 }
 
 void NearestNeighbour::runFromVertex(const Graph& graph, int startVertex,
-                                      std::vector<int>& outPath, int& outCost) const {
+                                      vector<int>& outPath, int& outCost) const {
     const int n = graph.getSize();
 
-    std::vector<bool> visited(n, false);
-    std::vector<int> path;
-    path.reserve(n + 1);
+    vector<bool> visited(n, false);
+    vector<int> path;
 
     int currentVertex = startVertex;
     visited[currentVertex] = true;

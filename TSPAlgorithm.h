@@ -13,7 +13,7 @@ public:
     TSPAlgorithm();
 
     // Wirtualny destruktor – wymagany dla poprawnego polimorfizmu
-    virtual ~TSPAlgorithm() = default;
+    virtual ~TSPAlgorithm() {}
 
     // Glowna metoda algorytmu – do zaimplementowania przez klasy pochodne.
     // Przyjmuje graf, zapisuje najlepsza sciezke i jej koszt.

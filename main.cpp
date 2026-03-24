@@ -11,41 +11,43 @@
 #include "RandomSearch.h"
 #include "ExperimentRunner.h"
 
+using namespace std;
+
 // Czysci bufor wejscia po blednym odczycie
 void clearInputBuffer() {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    cin.clear();
+    cin.ignore(10000, '\n');
 }
 
 // Wczytuje liczbe calkowita z walidacja
-int readInt(const std::string& prompt) {
+int readInt(const string& prompt) {
     int value;
     while (true) {
-        std::cout << prompt;
-        if (std::cin >> value) return value;
-        std::cout << "Blad: podaj liczbe calkowita.\n";
+        cout << prompt;
+        if (cin >> value) return value;
+        cout << "Blad: podaj liczbe calkowita.\n";
         clearInputBuffer();
     }
 }
 
 // Wyswietla glowne menu
 void printMenu() {
-    std::cout << "1. Wczytaj dane z pliku"<< std::endl;
-    std::cout << "2. Generuj losowe dane" << std::endl;
-    std::cout << "3. Wyswietl aktualne dane (macierz)" << std::endl;
-    std::cout << "4. Uruchom algorytm" << std::endl;
-    std::cout << "0. Wyjscie" << std::endl;
-    std::cout << "Wybor: ";
+    cout << "1. Wczytaj dane z pliku"<< endl;
+    cout << "2. Generuj losowe dane" << endl;
+    cout << "3. Wyswietl aktualne dane (macierz)" << endl;
+    cout << "4. Uruchom algorytm" << endl;
+    cout << "0. Wyjscie" << endl;
+    cout << "Wybor: ";
 }
 
 // Wyswietla podmenu wyboru algorytmu
 void printAlgorithmMenu() {
-    std::cout << "Wybor algorytmu:" << std::endl;
-    std::cout << "1. Brute-Force (przeglad zupelny)" << std::endl;
-    std::cout << "2. Nearest Neighbour (NN)" << std::endl;
-    std::cout << "3. Repetitive Nearest Neighbour (RNN)" << std::endl;
-    std::cout << "4. Algorytm losowy (Random Search)" << std::endl;
-    std::cout << "Wybor algorytmu: ";
+    cout << "Wybor algorytmu:" << endl;
+    cout << "1. Brute-Force (przeglad zupelny)" << endl;
+    cout << "2. Nearest Neighbour (NN)" << endl;
+    cout << "3. Repetitive Nearest Neighbour (RNN)" << endl;
+    cout << "4. Algorytm losowy (Random Search)" << endl;
+    cout << "Wybor algorytmu: ";
 }
 
 // -----------------------------------------------------------------------
@@ -54,9 +56,9 @@ void printAlgorithmMenu() {
 
 // Opcja 1: Wczytanie grafu z pliku
 void menuLoadFromFile(Graph& graph) {
-    std::string filename;
-    std::cout << "Podaj nazwe pliku: ";
-    std::cin >> filename;
+    string filename;
+    cout << "Podaj nazwe pliku: ";
+    cin >> filename;
     graph.loadFromFile(filename);
 }
 
@@ -76,13 +78,13 @@ void menuDisplay(const Graph& graph) {
 // Opcja 4: Uruchomienie wybranego algorytmu
 void menuRunAlgorithm(const Graph& graph) {
     if (!graph.isValid()) {
-        std::cout << "Blad: brak wczytanych danych." << std::endl;
+        cout << "Blad: brak wczytanych danych." << endl;
         return;
     }
 
     printAlgorithmMenu();
     int choice;
-    std::cin >> choice;
+    cin >> choice;
 
     switch (choice) {
         case 1: {
@@ -106,40 +108,40 @@ void menuRunAlgorithm(const Graph& graph) {
         case 4: {
             RandomSearch rnd;
             // Zapytaj uzytkownika o liczbe permutacji (zgodnie ze specyfikacja menu)
-            std::cout << "Podaj liczbe permutacji (0 = domyslnie 10*N = "
+            cout << "Podaj liczbe permutacji (0 = domyslnie 10*N = "
                       << 10 * graph.getSize() << "): ";
             int iters;
-            std::cin >> iters;
+            cin >> iters;
             if (iters <= 0) {
                 rnd.solve(graph);
             } else {
                 rnd.solveWithCustomIterations(graph, iters);
             }
-            std::cout << "Liczba permutacji: "
-                      << rnd.getLastIterationCount() << std::endl;
+            cout << "Liczba permutacji: "
+                      << rnd.getLastIterationCount() << endl;
             rnd.printResults();
             break;
         }
         default:
-            std::cout << "Blad: nieznany algorytm." << std::endl;
+            cout << "Blad: nieznany algorytm." << endl;
     }
 }
 
 // Opcja ukryta (99): Testy automatyczne ExperimentRunner
 void menuRunExperiments() {
-    std::cout << "TRYB TESTOW AUTOMATYCZNYCH" << std::endl;
+    cout << "TRYB TESTOW AUTOMATYCZNYCH" << endl;
 
     ExperimentRunner runner;
 
-    std::cout << "Wybierz testy do przeprowadzenia:" << std::endl;
-    std::cout << "1. Blad wzgledny NN/RNN/Random dla N=10..14 (100 instancji)" << std::endl;
-    std::cout << "2. Czas BF dla wybranych N" << std::endl;
-    std::cout << "3. Znajdz N dla czasu BF = 2 minuty" << std::endl;
-    std::cout << "4. Wszystkie powyzsze" << std::endl;
-    std::cout << "Wybor: ";
+    cout << "Wybierz testy do przeprowadzenia:" << endl;
+    cout << "1. Blad wzgledny NN/RNN/Random dla N=10..14 (100 instancji)" << endl;
+    cout << "2. Czas BF dla wybranych N" << endl;
+    cout << "3. Znajdz N dla czasu BF = 2 minuty" << endl;
+    cout << "4. Wszystkie powyzsze" << endl;
+    cout << "Wybor: ";
 
     int testChoice;
-    std::cin >> testChoice;
+    cin >> testChoice;
 
     if (testChoice == 1 || testChoice == 4) {
         runner.runErrorExperiment("error_results.csv");
@@ -148,13 +150,13 @@ void menuRunExperiments() {
     if (testChoice == 2 || testChoice == 4) {
         // Reprezentatywne wartosci N dla pomiaru czasu BF
         // (skupiamy sie na wiekszych N zgodnie z wymaganiem projektu)
-        std::vector<int> nValues;
-        std::cout << "Podaj wartosci N do pomiaru czasu BF (oddzielone spacjami, zakoncz 0):\n";
-        std::cout << "Sugerowane: 6 7 8 9 10 11 12\n";
-        std::cout << "N: ";
+        vector<int> nValues;
+        cout << "Podaj wartosci N do pomiaru czasu BF (oddzielone spacjami, zakoncz 0):\n";
+        cout << "Sugerowane: 6 7 8 9 10 11 12\n";
+        cout << "N: ";
 
         int val;
-        while (std::cin >> val && val != 0) {
+        while (cin >> val && val != 0) {
             nValues.push_back(val);
         }
 
@@ -169,8 +171,8 @@ void menuRunExperiments() {
 
     if (testChoice == 3 || testChoice == 4) {
         int foundN = runner.findNForTargetTime(120.0);
-        std::cout << "\nWynik: N = " << foundN
-                  << " daje czas BF okolo 2 minuty." << std::endl;
+        cout << "\nWynik: N = " << foundN
+                  << " daje czas BF okolo 2 minuty." << endl;
     }
 }
 
@@ -184,7 +186,7 @@ int main() {
     int choice = -1;
     while (choice != 0) {
         printMenu();
-        if (!(std::cin >> choice)) {
+        if (!(cin >> choice)) {
             clearInputBuffer();
             continue;
         }
@@ -203,14 +205,14 @@ int main() {
                 menuRunAlgorithm(graph);
                 break;
             case 0:
-                std::cout << "Do widzenia!" << std::endl;
+                cout << "Do widzenia!" << endl;
                 break;
             // Ukryta opcja testow automatycznych
             case 99:
                 menuRunExperiments();
                 break;
             default:
-                std::cout << "Blad: nieznana opcja." << std::endl;
+                cout << "Blad: nieznana opcja." << endl;
         }
     }
 

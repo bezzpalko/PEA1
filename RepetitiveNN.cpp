@@ -3,7 +3,9 @@
 #include <climits>
 #include <algorithm>
 
-std::string RepetitiveNN::getName() const {
+using namespace std;
+
+string RepetitiveNN::getName() const {
     return "Repetitive Nearest Neighbour (z obsluga remisow)";
 }
 
@@ -17,7 +19,7 @@ void RepetitiveNN::solve(const Graph& graph) {
 
     // Uruchamiamy poszukiwanie z kazdego wierzcholka startowego
     for (int startVertex = 0; startVertex < n; ++startVertex) {
-        std::vector<int> candidatePath;
+        vector<int> candidatePath;
         int candidateCost = INT_MAX;
 
         runWithTieBreaking(graph, startVertex, candidatePath, candidateCost);
@@ -34,14 +36,14 @@ void RepetitiveNN::solve(const Graph& graph) {
 }
 
 void RepetitiveNN::runWithTieBreaking(const Graph& graph, int startVertex,
-                                       std::vector<int>& outBestPath,
+                                       vector<int>& outBestPath,
                                        int& outBestCost) const {
     const int n = graph.getSize();
     outBestCost = INT_MAX;
     outBestPath.clear();
 
     // Inicjalizacja stosu – poczatkowy stan poszukiwania
-    std::stack<SearchState> stateStack;
+    stack<SearchState> stateStack;
 
     SearchState initialState;
     initialState.path.push_back(startVertex);
@@ -51,16 +53,16 @@ void RepetitiveNN::runWithTieBreaking(const Graph& graph, int startVertex,
     initialState.currentCost = 0;
     initialState.startVertex = startVertex;
 
-    stateStack.push(std::move(initialState));
+    stateStack.push(initialState);
 
     // Iteracyjne przeszukiwanie z rozgalezianiem przy remisach
     while (!stateStack.empty()) {
         // Pobierz kopie stanu (move dla wydajnosci)
-        SearchState state = std::move(stateStack.top());
+        SearchState state = stateStack.top();
         stateStack.pop();
 
         // Jesli odwiedzilismy wszystkie wierzcholki – zamknij cykl
-        if (static_cast<int>(state.path.size()) == n) {
+        if (state.path.size() == n) {
             int returnEdge = graph.getEdge(state.currentVertex, state.startVertex);
 
             // Krawedz powrotna musi istniec
@@ -107,7 +109,7 @@ void RepetitiveNN::runWithTieBreaking(const Graph& graph, int startVertex,
             newState.path.push_back(candidate);
             newState.visited[candidate] = true;
 
-            stateStack.push(std::move(newState));
+            stateStack.push(newState);
         }
     }
 }

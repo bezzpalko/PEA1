@@ -5,10 +5,14 @@
 #include <random>
 #include <climits>
 
-RandomSearch::RandomSearch(unsigned int seed)
-    : seed(seed), lastIterationCount(0) {}
+using namespace std;
 
-std::string RandomSearch::getName() const {
+RandomSearch::RandomSearch(unsigned int seed) {
+    this->seed = seed;
+    this->lastIterationCount = 0;
+}
+
+string RandomSearch::getName() const {
     return "Random Search (algorytm losowy)";
 }
 
@@ -35,12 +39,12 @@ void RandomSearch::runSearch(const Graph& graph, int iterations) {
     lastIterationCount = iterations;
 
     // Inicjalizacja generatora:
-    // Jesli seed == 0, uzywamy std::random_device dla pełnej losowosci.
+    // Jesli seed == 0, uzywamy random_device dla pełnej losowosci.
     // Uzywamy Mersenne Twister (mt19937) – bardzo dobra jakosc losowosci,
     // ogromny okres (2^19937-1), co minimalizuje ryzyko powtorzen permutacji.
-    std::mt19937 rng;
+    mt19937 rng;
     if (seed == 0) {
-        std::random_device rd;
+        random_device rd;
         rng.seed(rd());
     } else {
         rng.seed(seed);
@@ -50,16 +54,18 @@ void RandomSearch::runSearch(const Graph& graph, int iterations) {
     // Wierzcholek startowy (0) rowniez jest losowany – w ATSP kolejnosc
     // wszystkich wierzcholkow ma znaczenie, wiec permutujemy caly wektor,
     // a jako punkt startowy traktujemy pierwszy element po przetasowaniu.
-    std::vector<int> perm(n);
-    std::iota(perm.begin(), perm.end(), 0); // {0, 1, 2, ..., n-1}
-
+    vector<int> perm(n);
+    for (int i = 0; i < n; ++i) {
+        perm[i] = i;
+    }
+    
     Timer timer;
     timer.start();
 
     for (int iter = 0; iter < iterations; ++iter) {
-        // std::shuffle z mt19937 – tasowanie Fisher-Yates,
+        // shuffle z mt19937 – tasowanie Fisher-Yates,
         // kazda permutacja jest jednakowo prawdopodobna.
-        std::shuffle(perm.begin(), perm.end(), rng);
+        shuffle(perm.begin(), perm.end(), rng);
 
         // Oblicz koszt sciezki: perm[0] -> perm[1] -> ... -> perm[n-1] -> perm[0]
         int cost = 0;

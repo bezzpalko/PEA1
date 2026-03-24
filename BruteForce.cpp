@@ -4,7 +4,9 @@
 #include <numeric>
 #include <climits>
 
-std::string BruteForce::getName() const {
+using namespace std;
+
+string BruteForce::getName() const {
     return "Brute-Force (przeglad zupelny)";
 }
 
@@ -15,18 +17,18 @@ void BruteForce::solve(const Graph& graph) {
 
     // Wierzcholek startowy jest zawsze 0 – permutujemy pozostale wierzcholki
     // Velicina przestrzeni: (n-1)! permutacji
-    std::vector<int> perm(n - 1);
-    std::iota(perm.begin(), perm.end(), 1); // Wypelnia wartosciami 1, 2, ..., n-1
+    vector<int> perm(n - 1);
+    iota(perm.begin(), perm.end(), 1); // Wypelnia wartosciami 1, 2, ..., n-1
 
     // Budujemy pelna sciezke: [0, permutacja..., 0]
-    std::vector<int> currentPath(n + 1);
+    vector<int> currentPath(n + 1);
     currentPath[0] = 0;
     currentPath[n] = 0; // Powrot do wierzcholka startowego
 
     Timer timer;
     timer.start();
 
-    // std::next_permutation iteruje przez wszystkie permutacje w kolejnosci leksykograficznej.
+    // next_permutation iteruje przez wszystkie permutacje w kolejnosci leksykograficznej.
     // Petla wykonuje sie dokladnie (n-1)! razy.
     do {
         // Przepisanie aktualnej permutacji do pelnej sciezki
@@ -56,7 +58,7 @@ void BruteForce::solve(const Graph& graph) {
             bestPath = currentPath;
         }
 
-    } while (std::next_permutation(perm.begin(), perm.end()));
+    } while (next_permutation(perm.begin(), perm.end()));
 
     timer.stop();
     executionTimeNs = timer.getElapsedNanoseconds();

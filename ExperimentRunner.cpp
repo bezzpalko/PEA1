@@ -6,6 +6,8 @@
 #include <climits>
 #include <numeric>
 
+using namespace std;
+
 // -----------------------------------------------------------------------
 // Pomocnicze
 // -----------------------------------------------------------------------
@@ -16,11 +18,11 @@ double ExperimentRunner::relativeError(int cost, int optimum) const {
     return (static_cast<double>(cost - optimum) / static_cast<double>(optimum)) * 100.0;
 }
 
-const std::vector<ExperimentResult>& ExperimentRunner::getErrorResults() const {
+const vector<ExperimentResult>& ExperimentRunner::getErrorResults() const {
     return errorResults;
 }
 
-const std::vector<BFTimeResult>& ExperimentRunner::getBFTimeResults() const {
+const vector<BFTimeResult>& ExperimentRunner::getBFTimeResults() const {
     return bfTimeResults;
 }
 
@@ -28,10 +30,10 @@ const std::vector<BFTimeResult>& ExperimentRunner::getBFTimeResults() const {
 // Glowny eksperyment – blad wzgledny dla N in {10,11,12,13,14}
 // -----------------------------------------------------------------------
 
-void ExperimentRunner::runErrorExperiment(const std::string& outputCsvPath) {
+void ExperimentRunner::runErrorExperiment(const string& outputCsvPath) {
     errorResults.clear();
 
-    const std::vector<int> nValues = {10, 11, 12, 13, 14};
+    const vector<int> nValues = {10, 11, 12, 13, 14};
     const int repetitions = 100;
 
     BruteForce     bf;
@@ -39,10 +41,10 @@ void ExperimentRunner::runErrorExperiment(const std::string& outputCsvPath) {
     RepetitiveNN   rnn;
     RandomSearch   rndSearch;
 
-    std::cout << "Eksperyment: sredni blad wzgledny (100 instancji)" << std::endl;
+    cout << "Eksperyment: sredni blad wzgledny (100 instancji)" << endl;
 
     for (int n : nValues) {
-        std::cout << "[N = " << n << "] trwa obliczanie..." << std::flush;
+        cout << "[N = " << n << "] trwa obliczanie...";
 
         double sumErrorNN     = 0.0;
         double sumErrorRNN    = 0.0;
@@ -92,12 +94,12 @@ void ExperimentRunner::runErrorExperiment(const std::string& outputCsvPath) {
 
             // Postep co 10 instancji
             if ((rep + 1) % 10 == 0) {
-                std::cout << " " << (rep + 1) << "/" << repetitions << std::flush;
+                cout << " " << (rep + 1) << "/" << repetitions;
             }
         }
 
         if (validCount == 0) {
-            std::cout << "Brak waznych wynikow dla N=" << n << std::endl;
+            cout << "Brak waznych wynikow dla N=" << n << endl;
             continue;
         }
 
@@ -113,32 +115,32 @@ void ExperimentRunner::runErrorExperiment(const std::string& outputCsvPath) {
 
         errorResults.push_back(result);
 
-        std::cout << "\n  BF  czas avg:  " << std::fixed << std::setprecision(2)
+        cout << "\n  BF  czas avg:  " << fixed << setprecision(2)
                   << result.avgTimeBF_ns / 1e6 << " ms";
-        std::cout << "\n  NN  blad avg:  " << result.avgErrorNN    << " %";
-        std::cout << "\n  RNN blad avg:  " << result.avgErrorRNN   << " %";
-        std::cout << "\n  Rnd blad avg:  " << result.avgErrorRandom << " %" << std::endl;
+        cout << "\n  NN  blad avg:  " << result.avgErrorNN    << " %";
+        cout << "\n  RNN blad avg:  " << result.avgErrorRNN   << " %";
+        cout << "\n  Rnd blad avg:  " << result.avgErrorRandom << " %" << endl;
     }
 
     saveErrorResultsToCSV(outputCsvPath);
-    std::cout << "Wyniki zapisano do: " << outputCsvPath << std::endl;
+    cout << "Wyniki zapisano do: " << outputCsvPath << endl;
 }
 
 // -----------------------------------------------------------------------
 // Eksperyment czasu BF
 // -----------------------------------------------------------------------
 
-void ExperimentRunner::runBFTimeExperiment(const std::vector<int>& nValues,
+void ExperimentRunner::runBFTimeExperiment(const vector<int>& nValues,
                                             int repetitions,
-                                            const std::string& outputCsvPath) {
+                                            const string& outputCsvPath) {
     bfTimeResults.clear();
     BruteForce bf;
 
-    std::cout << "Eksperyment: Czas BF vs N" << std::endl;
-    std::cout << std::setw(6) << "N"
-              << std::setw(18) << "Avg czas [ms]"
-              << std::setw(18) << "Avg czas [s]" << std::endl;
-    std::cout << std::string(42, '-') << std::endl;
+    cout << "Eksperyment: Czas BF vs N" << endl;
+    cout << setw(6) << "N"
+              << setw(18) << "Avg czas [ms]"
+              << setw(18) << "Avg czas [s]" << endl;
+    cout << string(42, '-') << endl;
 
     for (int n : nValues) {
         double sumTime_ns = 0.0;
@@ -162,15 +164,15 @@ void ExperimentRunner::runBFTimeExperiment(const std::vector<int>& nValues,
         result.avgTime_s  = result.avgTime_ns / 1e9;
         bfTimeResults.push_back(result);
 
-        std::cout << std::setw(6) << n
-                  << std::setw(18) << std::fixed << std::setprecision(4)
+        cout << setw(6) << n
+                  << setw(18) << fixed << setprecision(4)
                   << result.avgTime_ns / 1e6
-                  << std::setw(18) << std::setprecision(6)
-                  << result.avgTime_s << std::endl;
+                  << setw(18) << setprecision(6)
+                  << result.avgTime_s << endl;
     }
 
     saveBFTimeResultsToCSV(outputCsvPath);
-    std::cout << "Wyniki czasu BF zapisano do: " << outputCsvPath << std::endl;
+    cout << "Wyniki czasu BF zapisano do: " << outputCsvPath << endl;
 }
 
 // -----------------------------------------------------------------------
@@ -182,9 +184,9 @@ int ExperimentRunner::findNForTargetTime(double targetSeconds) {
     const int repetitions = 3; // Malo powtorzen – wieksze N trwa dlugo
     const double toleranceFactor = 0.1; // 10% tolerancja
 
-    std::cout << "Szukanie N dla czasu BF = "
-              << std::fixed << std::setprecision(0)
-              << targetSeconds << " s" << std::endl;
+    cout << "Szukanie N dla czasu BF = "
+              << fixed << setprecision(0)
+              << targetSeconds << " s" << endl;
 
     // Startujemy od N=10 i zwiekszamy az przekroczymy cel
     int n = 10;
@@ -200,22 +202,22 @@ int ExperimentRunner::findNForTargetTime(double targetSeconds) {
         }
         measuredTime = sumTime / repetitions;
 
-        std::cout << "  N = " << std::setw(3) << n
-                  << " | Avg czas: " << std::fixed << std::setprecision(4)
-                  << measuredTime << " s" << std::endl;
+        cout << "  N = " << setw(3) << n
+                  << " | Avg czas: " << fixed << setprecision(4)
+                  << measuredTime << " s" << endl;
 
         // Sprawdz czy jestesmy w przedziale docelowym
-        if (std::abs(measuredTime - targetSeconds) / targetSeconds <= toleranceFactor) {
-            std::cout << "[OK] Znaleziono: N = " << n
-                      << " (~" << measuredTime << " s)" << std::endl;
+        if (abs(measuredTime - targetSeconds) / targetSeconds <= toleranceFactor) {
+            cout << "[OK] Znaleziono: N = " << n
+                      << " (~" << measuredTime << " s)" << endl;
             return n;
         }
 
         // Przekroczylismy cel – poprzednie N bylo blizej
         if (measuredTime > targetSeconds) {
-            std::cout << "[OK] Najblizsze N = " << n
+            cout << "[OK] Najblizsze N = " << n
                       << " (czas: " << measuredTime << " s > "
-                      << targetSeconds << " s)" << std::endl;
+                      << targetSeconds << " s)" << endl;
             return n;
         }
 
@@ -223,7 +225,7 @@ int ExperimentRunner::findNForTargetTime(double targetSeconds) {
 
         // Zabezpieczenie przed zbyt dlugim dzialaniem
         if (n > 20) {
-            std::cout << "[Uwaga] Przekroczono N=20 bez osiagniecia celu." << std::endl;
+            cout << "[Uwaga] Przekroczono N=20 bez osiagniecia celu." << endl;
             return n;
         }
     }
@@ -233,10 +235,10 @@ int ExperimentRunner::findNForTargetTime(double targetSeconds) {
 // Zapis do CSV
 // -----------------------------------------------------------------------
 
-void ExperimentRunner::saveErrorResultsToCSV(const std::string& path) const {
-    std::ofstream file(path);
+void ExperimentRunner::saveErrorResultsToCSV(const string& path) const {
+    ofstream file(path);
     if (!file.is_open()) {
-        std::cerr << "[Blad] Nie mozna zapisac do pliku: " << path << std::endl;
+        cerr << "[Blad] Nie mozna zapisac do pliku: " << path << endl;
         return;
     }
 
@@ -250,7 +252,7 @@ void ExperimentRunner::saveErrorResultsToCSV(const std::string& path) const {
          << "AvgTime_RNN_ms,"
          << "AvgTime_Random_ms\n";
 
-    file << std::fixed << std::setprecision(6);
+    file << fixed << setprecision(6);
     for (const auto& r : errorResults) {
         file << r.n                       << ","
              << r.avgErrorNN              << ","
@@ -265,15 +267,15 @@ void ExperimentRunner::saveErrorResultsToCSV(const std::string& path) const {
     file.close();
 }
 
-void ExperimentRunner::saveBFTimeResultsToCSV(const std::string& path) const {
-    std::ofstream file(path);
+void ExperimentRunner::saveBFTimeResultsToCSV(const string& path) const {
+    ofstream file(path);
     if (!file.is_open()) {
-        std::cerr << "[Blad] Nie mozna zapisac do pliku: " << path << std::endl;
+        cerr << "[Blad] Nie mozna zapisac do pliku: " << path << endl;
         return;
     }
 
     file << "N,AvgTime_ms,AvgTime_s\n";
-    file << std::fixed << std::setprecision(6);
+    file << fixed << setprecision(6);
     for (const auto& r : bfTimeResults) {
         file << r.n                   << ","
              << r.avgTime_ns / 1e6    << ","
