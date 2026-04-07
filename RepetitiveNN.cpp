@@ -17,14 +17,14 @@ void RepetitiveNN::solve(const Graph& graph) {
     Timer timer;
     timer.start();
 
-    // Uruchamiamy poszukiwanie z kazdego wierzcholka startowego
+    // uruchamiamy poszukiwanie z kazdego wierzcholka startowego
     for (int startVertex = 0; startVertex < n; ++startVertex) {
         vector<int> candidatePath;
         int candidateCost = INT_MAX;
 
         runWithTieBreaking(graph, startVertex, candidatePath, candidateCost);
 
-        // Aktualizuj globalnie najlepszy wynik
+        // aktualizuj globalnie najlepszy wynik
         if (candidateCost < bestCost) {
             bestCost = candidateCost;
             bestPath = candidatePath;
@@ -35,14 +35,12 @@ void RepetitiveNN::solve(const Graph& graph) {
     executionTimeNs = timer.getElapsedNanoseconds();
 }
 
-void RepetitiveNN::runWithTieBreaking(const Graph& graph, int startVertex,
-                                       vector<int>& outBestPath,
-                                       int& outBestCost) const {
+void RepetitiveNN::runWithTieBreaking(const Graph& graph, int startVertex, vector<int>& outBestPath, int& outBestCost) const {
     const int n = graph.getSize();
     outBestCost = INT_MAX;
     outBestPath.clear();
 
-    // Inicjalizacja stosu – poczatkowy stan poszukiwania
+    // inicjalizacja stosu, poczatkowy stan poszukiwania
     stack<SearchState> stateStack;
 
     SearchState initialState;
@@ -55,30 +53,30 @@ void RepetitiveNN::runWithTieBreaking(const Graph& graph, int startVertex,
 
     stateStack.push(initialState);
 
-    // Iteracyjne przeszukiwanie z rozgalezianiem przy remisach
+    // iteracyjne przeszukiwanie z rozgalezianiem przy remisach
     while (!stateStack.empty()) {
-        // Pobierz kopie stanu (move dla wydajnosci)
+        // pobierz kopie stanu
         SearchState state = stateStack.top();
         stateStack.pop();
 
-        // Jesli odwiedzilismy wszystkie wierzcholki – zamknij cykl
+        // jesli odwiedzilismy wszystkie wierzcholki to zamknij cykl
         if (state.path.size() == n) {
             int returnEdge = graph.getEdge(state.currentVertex, state.startVertex);
 
-            // Krawedz powrotna musi istniec
+            // krawedz powrotna
             if (returnEdge != -1) {
                 int totalCost = state.currentCost + returnEdge;
 
                 if (totalCost < outBestCost) {
                     outBestCost = totalCost;
                     outBestPath = state.path;
-                    outBestPath.push_back(state.startVertex); // Zamkniecie cyklu
+                    outBestPath.push_back(state.startVertex); // zamkniecie cyklu
                 }
             }
             continue;
         }
 
-        // Znajdz minimalny koszt wsrod dostepnych krawedzi
+        // znajdz minimalny koszt wsrod dostepnych krawedzi
         int minEdgeCost = INT_MAX;
         for (int candidate = 0; candidate < n; ++candidate) {
             if (state.visited[candidate]) continue;
@@ -88,20 +86,19 @@ void RepetitiveNN::runWithTieBreaking(const Graph& graph, int startVertex,
             }
         }
 
-        // Jesli nie ma zadnej dostepnej krawedzi – sciezka jest slepa uliczka
+        // jesli nie ma zadnej dostepnej krawedzi to sciezka jest slepa uliczka
         if (minEdgeCost == INT_MAX) continue;
 
-        // Zbierz WSZYSTKICH kandydatow o koszcie rownym minimalnemu (remis)
-        // Kazdy z nich trafi na stos jako osobna galaz poszukiwan
+        // zbierz wszystkich kandydatow o koszcie rownym minimalnemu (remis), kazdy z nich  na stos jako osobna galaz poszukiwan
         for (int candidate = 0; candidate < n; ++candidate) {
             if (state.visited[candidate]) continue;
             int edgeCost = graph.getEdge(state.currentVertex, candidate);
             if (edgeCost != minEdgeCost) continue;
 
-            // Tworzymy nowy stan dla tej galezi
+            // nowy stan dla tej galezi
             SearchState newState;
-            newState.path = state.path;               // Kopia aktualnej sciezki
-            newState.visited = state.visited;         // Kopia maski odwiedzonych
+            newState.path = state.path;               // kopia aktualnej sciezki
+            newState.visited = state.visited;         // kopia maski odwiedzonych
             newState.currentVertex = candidate;
             newState.currentCost = state.currentCost + edgeCost;
             newState.startVertex = state.startVertex;

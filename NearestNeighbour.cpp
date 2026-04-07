@@ -6,16 +6,19 @@
 using namespace std;
 
 string NearestNeighbour::getName() const {
+    // zwraca czytelną nazwę algorytmu
     return "Nearest Neighbour (zachlanny)";
 }
 
 void NearestNeighbour::solve(const Graph& graph) {
+    // wyczyszczenie poprzednich wyników
     reset();
     if (graph.getSize() <= 0) return;
 
     Timer timer;
     timer.start();
 
+    // poszukiwania zawsze rozpoczynamy od pierwszego wierzchołka (indeks 0)
     runFromVertex(graph, 0, bestPath, bestCost);
 
     timer.stop();
@@ -26,6 +29,7 @@ void NearestNeighbour::runFromVertex(const Graph& graph, int startVertex,
                                       vector<int>& outPath, int& outCost) const {
     const int n = graph.getSize();
 
+    // przygotowanie struktur śledzących odwiedzone miasta oraz budowaną trasę
     vector<bool> visited(n, false);
     vector<int> path;
 
@@ -33,30 +37,28 @@ void NearestNeighbour::runFromVertex(const Graph& graph, int startVertex,
     visited[currentVertex] = true;
     path.push_back(currentVertex);
 
-    // Wykonujemy n-1 krokow, za kazdym razem wybierajac najblizszego sasiada
+    // w każdym z n-1 kroków algorytm podejmuje lokalnie optymalną (zachłanną) decyzję o przejściu do najbliższego miasta
     for (int step = 0; step < n - 1; ++step) {
         int nearestVertex = -1;
         int minCost = INT_MAX;
 
-        // Przeszukaj wszystkich nieodwiedzonych sasiadow
+        // przegląd wszystkich potencjalnych wierzchołków w poszukiwaniu najtańszego przejścia
         for (int candidate = 0; candidate < n; ++candidate) {
             if (visited[candidate]) continue;
 
             int edgeCost = graph.getEdge(currentVertex, candidate);
 
-            // Pomijamy krawedzie nielegalne (-1)
+            // pominięcie krawędzi o wadze -1
             if (edgeCost == -1) continue;
 
-            // Wybieramy kandydata o nizszym koszcie.
-            // W przypadku remisu – zachowujemy wierzcholek o nizszym indeksie
-            // (deterministyczny wybor, nizszy indeks zachodzi przez warunek '<').
+            // wybór najlepszego kandydata
             if (edgeCost < minCost) {
                 minCost = edgeCost;
                 nearestVertex = candidate;
             }
         }
 
-        // Jesli nie znaleziono sasiada – graf nie jest spojny, przerywamy
+        // zabezpieczenie na wypadek grafu niespójnego
         if (nearestVertex == -1) {
             outPath.clear();
             outCost = INT_MAX;
@@ -68,14 +70,15 @@ void NearestNeighbour::runFromVertex(const Graph& graph, int startVertex,
         currentVertex = nearestVertex;
     }
 
-    // Powrot do wierzcholka startowego – zamkniecie cyklu
+    // domknięcie cyklu poprzez dopisanie wierzchołka startowego na sam koniec wektora trasy
     path.push_back(startVertex);
 
-    // Oblicz calkowity koszt sciezki
+    // podsumowanie kosztów wyznaczonej ścieżki
     int totalCost = 0;
     for (int i = 0; i < n; ++i) {
         int edge = graph.getEdge(path[i], path[i + 1]);
         if (edge == -1) {
+            // czy krawędź powrotna z ostatniego miasta do pierwszego na pewno istnieje
             outPath.clear();
             outCost = INT_MAX;
             return;

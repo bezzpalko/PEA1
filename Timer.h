@@ -1,26 +1,25 @@
 #pragma once
 #include <chrono>
 
-// Klasa do precyzyjnego pomiaru czasu wykonania algorytmow
-// Oparta na std::chrono::high_resolution_clock
+// Klasa do precyzyjnego pomiaru czasu  oparta na std::chrono::high_resolution_clock
 class Timer {
 public:
-    // Rozpoczyna pomiar czasu
+    // rozpoczyna pomiar czasu
     void start();
 
-    // Zatrzymuje pomiar czasu
+    // zatrzymuje pomiar czasu
     void stop();
 
-    // Zwraca zmierzony czas w nanosekundach
+    // zwraca zmierzony czas w nanosekundach
     long long getElapsedNanoseconds() const;
 
-    // Zwraca zmierzony czas w mikrosekundach
+    // zwraca zmierzony czas w mikrosekundach
     long long getElapsedMicroseconds() const;
 
-    // Zwraca zmierzony czas w milisekundach
+    // zwraca zmierzony czas w milisekundach
     long long getElapsedMilliseconds() const;
 
-    // Zwraca zmierzony czas w sekundach (jako double dla precyzji)
+    // zwraca zmierzony czas w sekundach
     double getElapsedSeconds() const;
 
 private:

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BackendCodeEditorMiscSettings">
+    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5d14f741-483d-461a-875b-bcfcd6b1b84e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/BruteForce.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/BruteForce.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BruteForce.h" beforeDir="false" afterPath="$PROJECT_DIR$/BruteForce.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExperimentRunner.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ExperimentRunner.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExperimentRunner.h" beforeDir="false" afterPath="$PROJECT_DIR$/ExperimentRunner.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Graph.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Graph.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Graph.h" beforeDir="false" afterPath="$PROJECT_DIR$/Graph.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NearestNeighbour.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/NearestNeighbour.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NearestNeighbour.h" beforeDir="false" afterPath="$PROJECT_DIR$/NearestNeighbour.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RandomSearch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/RandomSearch.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RandomSearch.h" beforeDir="false" afterPath="$PROJECT_DIR$/RandomSearch.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RepetitiveNN.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/RepetitiveNN.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RepetitiveNN.h" beforeDir="false" afterPath="$PROJECT_DIR$/RepetitiveNN.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TSPAlgorithm.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/TSPAlgorithm.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TSPAlgorithm.h" beforeDir="false" afterPath="$PROJECT_DIR$/TSPAlgorithm.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Timer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Timer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Timer.h" beforeDir="false" afterPath="$PROJECT_DIR$/Timer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2025" />
+    <option name="minorVersion" value="2.5" />
+    <option name="productBranch" value="Classic" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="3BQx7uK5dgOIrSen31Q65eZHoHK" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5d14f741-483d-461a-875b-bcfcd6b1b84e" name="Changes" comment="" />
+      <created>1774434932227</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1774434932227</updated>
+      <workItem from="1774434935270" duration="3000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

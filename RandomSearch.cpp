@@ -22,7 +22,6 @@ int RandomSearch::getLastIterationCount() const {
 
 void RandomSearch::solve(const Graph& graph) {
     const int n = graph.getSize();
-    // Liczba permutacji zgodna z wymaganiem projektu: 10 * N
     const int iterations = 10 * n;
     runSearch(graph, iterations);
 }
@@ -38,11 +37,7 @@ void RandomSearch::runSearch(const Graph& graph, int iterations) {
 
     lastIterationCount = iterations;
 
-    // Inicjalizacja generatora:
-    // Jesli seed == 0, uzywamy random_device dla pełnej losowosci.
-    // Uzywamy Mersenne Twister (mt19937) – bardzo dobra jakosc losowosci,
-    // ogromny okres (2^19937-1), co minimalizuje ryzyko powtorzen permutacji.
-    mt19937 rng;
+    // inicjalizacja generatora
     if (seed == 0) {
         random_device rd;
         rng.seed(rd());
@@ -50,24 +45,19 @@ void RandomSearch::runSearch(const Graph& graph, int iterations) {
         rng.seed(seed);
     }
 
-    // Permutacja robocza: wierzcholki 0..n-1
-    // Wierzcholek startowy (0) rowniez jest losowany – w ATSP kolejnosc
-    // wszystkich wierzcholkow ma znaczenie, wiec permutujemy caly wektor,
-    // a jako punkt startowy traktujemy pierwszy element po przetasowaniu.
+    // permutacja robocza
     vector<int> perm(n);
     for (int i = 0; i < n; ++i) {
         perm[i] = i;
     }
-    
+
     Timer timer;
     timer.start();
 
     for (int iter = 0; iter < iterations; ++iter) {
-        // shuffle z mt19937 – tasowanie Fisher-Yates,
-        // kazda permutacja jest jednakowo prawdopodobna.
         shuffle(perm.begin(), perm.end(), rng);
 
-        // Oblicz koszt sciezki: perm[0] -> perm[1] -> ... -> perm[n-1] -> perm[0]
+        // obliczanie kosztt sciezki
         int cost = 0;
         bool valid = true;
 
@@ -80,7 +70,7 @@ void RandomSearch::runSearch(const Graph& graph, int iterations) {
             cost += edge;
         }
 
-        // Krawedz powrotu do wierzcholka startowego
+        // krawedz powrotu do wierzcholka startowego
         if (valid) {
             int returnEdge = graph.getEdge(perm[n - 1], perm[0]);
             if (returnEdge == -1) {
@@ -90,10 +80,10 @@ void RandomSearch::runSearch(const Graph& graph, int iterations) {
             }
         }
 
-        // Aktualizuj najlepszy wynik
+        // aktualizacja najlepszego wyniku
         if (valid && cost < bestCost) {
             bestCost = cost;
-            // Zapisz pelna sciezke z powrotem do startu
+            // zapis pełnej sciezki z powrotem do startu
             bestPath.assign(perm.begin(), perm.end());
             bestPath.push_back(perm[0]);
         }

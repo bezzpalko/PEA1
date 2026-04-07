@@ -1,29 +1,20 @@
 #pragma once
 #include "TSPAlgorithm.h"
 
-// Algorytm zachlanny Nearest Neighbour (NN) dla ATSP.
-// Zlozonosc: O(n^2).
-//
-// Zasada dzialania:
-//   1. Startuj od wierzcholka 0.
-//   2. W kazdym kroku przejdz do najblizszego nieodwiedzonego sasiada.
-//   3. Po odwiedzeniu wszystkich wierzcholkow wróc do startu.
-//
-// W przypadku remisu (kilka krawedzi o tym samym najmniejszym koszcie)
-// wybierany jest wierzcholek o najnizszym indeksie (deterministycznie).
+// zachłanny algorytm najbliższego sąsiada (nearest neighbour)
+
 class NearestNeighbour : public TSPAlgorithm {
 public:
+    // domyślny konstruktor klasy
     NearestNeighbour() = default;
 
-    // Uruchamia algorytm NN startujac zawsze z wierzcholka 0.
+    // główna metoda
     void solve(const Graph& graph) override;
 
+    // udostępnia tekstową nazwę algorytmu
     std::string getName() const override;
 
 protected:
-    // Pomocnicza metoda uruchamiajaca NN z podanego wierzcholka startowego.
-    // Zwraca znaleziona sciezke i jej koszt przez parametry referencyjne.
-    // Uzywana rowniez przez klase RepetitiveNN.
-    void runFromVertex(const Graph& graph, int startVertex,
-                       std::vector<int>& outPath, int& outCost) const;
+    // kluczowa metoda pomocnicza implementująca rdzeń logiki poszukiwania ścieżki od zadanego miasta startowego
+    void runFromVertex(const Graph& graph, int startVertex, std::vector<int>& outPath, int& outCost) const;
 };

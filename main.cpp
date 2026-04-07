@@ -13,13 +13,13 @@
 
 using namespace std;
 
-// Czysci bufor wejscia po blednym odczycie
+// czysci bufor wejscia po blednym odczycie
 void clearInputBuffer() {
     cin.clear();
     cin.ignore(10000, '\n');
 }
 
-// Wczytuje liczbe calkowita z walidacja
+// wczytuje liczbe calkowita z walidacja
 int readInt(const string& prompt) {
     int value;
     while (true) {
@@ -30,7 +30,7 @@ int readInt(const string& prompt) {
     }
 }
 
-// Wyswietla glowne menu
+// wyswietla glowne menu
 void printMenu() {
     cout << "1. Wczytaj dane z pliku"<< endl;
     cout << "2. Generuj losowe dane" << endl;
@@ -40,7 +40,7 @@ void printMenu() {
     cout << "Wybor: ";
 }
 
-// Wyswietla podmenu wyboru algorytmu
+// wyswietla podmenu wyboru algorytmu
 void printAlgorithmMenu() {
     cout << "Wybor algorytmu:" << endl;
     cout << "1. Brute-Force (przeglad zupelny)" << endl;
@@ -50,11 +50,8 @@ void printAlgorithmMenu() {
     cout << "Wybor algorytmu: ";
 }
 
-// -----------------------------------------------------------------------
-// Opcje menu
-// -----------------------------------------------------------------------
 
-// Opcja 1: Wczytanie grafu z pliku
+// wczytanie grafu z pliku
 void menuLoadFromFile(Graph& graph) {
     string filename;
     cout << "Podaj nazwe pliku: ";
@@ -62,7 +59,7 @@ void menuLoadFromFile(Graph& graph) {
     graph.loadFromFile(filename);
 }
 
-// Opcja 2: Generowanie losowego grafu
+// generowanie losowego grafu
 void menuGenerateRandom(Graph& graph) {
     int n        = readInt("Podaj rozmiar N: ");
     int minW     = readInt("Podaj minimalna wage krawedzi: ");
@@ -70,12 +67,12 @@ void menuGenerateRandom(Graph& graph) {
     graph.generateRandom(n, minW, maxW);
 }
 
-// Opcja 3: Wyswietlenie macierzy
+// wyswietlenie macierzy
 void menuDisplay(const Graph& graph) {
     graph.display();
 }
 
-// Opcja 4: Uruchomienie wybranego algorytmu
+// uruchomienie wybranego algorytmu
 void menuRunAlgorithm(const Graph& graph) {
     if (!graph.isValid()) {
         cout << "Blad: brak wczytanych danych." << endl;
@@ -107,7 +104,7 @@ void menuRunAlgorithm(const Graph& graph) {
         }
         case 4: {
             RandomSearch rnd;
-            // Zapytaj uzytkownika o liczbe permutacji (zgodnie ze specyfikacja menu)
+            // liczba permutacji
             cout << "Podaj liczbe permutacji (0 = domyslnie 10*N = "
                       << 10 * graph.getSize() << "): ";
             int iters;
@@ -127,7 +124,7 @@ void menuRunAlgorithm(const Graph& graph) {
     }
 }
 
-// Opcja ukryta (99): Testy automatyczne ExperimentRunner
+// opcja ukryta (99): testy automatyczne ExperimentRunner
 void menuRunExperiments() {
     cout << "TRYB TESTOW AUTOMATYCZNYCH" << endl;
 
@@ -148,8 +145,7 @@ void menuRunExperiments() {
     }
 
     if (testChoice == 2 || testChoice == 4) {
-        // Reprezentatywne wartosci N dla pomiaru czasu BF
-        // (skupiamy sie na wiekszych N zgodnie z wymaganiem projektu)
+        // reprezentatywne wartosci N dla pomiaru czasu BF
         vector<int> nValues;
         cout << "Podaj wartosci N do pomiaru czasu BF (oddzielone spacjami, zakoncz 0):\n";
         cout << "Sugerowane: 6 7 8 9 10 11 12\n";
@@ -161,11 +157,11 @@ void menuRunExperiments() {
         }
 
         if (nValues.empty()) {
-            // Domyslny zestaw jesli uzytkownik nic nie podal
+            // domyslny zestaw jesli uzytkownik nic nie podal
             nValues = {6, 7, 8, 9, 10, 11, 12};
         }
 
-        int reps = readInt("Liczba powtorzen dla kazdego N (np. 5): ");
+        int reps = readInt("Liczba powtorzen dla kazdego N: ");
         runner.runBFTimeExperiment(nValues, reps, "bf_time_results.csv");
     }
 
@@ -176,12 +172,10 @@ void menuRunExperiments() {
     }
 }
 
-// -----------------------------------------------------------------------
-// Punkt wejscia programu
-// -----------------------------------------------------------------------
+// punkt wejscia programu
 
 int main() {
-    Graph graph; // Aktualnie wczytany/wygenerowany graf
+    Graph graph; // aktualnie wczytany/wygenerowany graf
 
     int choice = -1;
     while (choice != 0) {
@@ -205,14 +199,13 @@ int main() {
                 menuRunAlgorithm(graph);
                 break;
             case 0:
-                cout << "Do widzenia!" << endl;
                 break;
-            // Ukryta opcja testow automatycznych
+            // ukryta opcja testow automatycznych
             case 99:
                 menuRunExperiments();
                 break;
             default:
-                cout << "Blad: nieznana opcja." << endl;
+                cout << "Blad: nieznana opcja" << endl;
         }
     }
 

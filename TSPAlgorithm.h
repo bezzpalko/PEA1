@@ -4,46 +4,42 @@
 #include <climits>
 #include "Graph.h"
 
-// Klasa bazowa (interfejs) dla algorytmow rozwiazujacych ATSP.
-// Realizuje wzorzec strategii (Strategy Pattern) – kazdy algorytm
-// implementuje metode solve() i przechowuje wynik w ujednolicony sposob.
+// klasa  definiująca wspólny interfejs dla wszystkich algorytmów
+
 class TSPAlgorithm {
 public:
-    // Konstruktor inicjalizuje stan poczatkowy
+    // konstruktor inicjalizuje stan poczatkowy
     TSPAlgorithm();
 
-    // Wirtualny destruktor – wymagany dla poprawnego polimorfizmu
+    // dla poprawnego polimorfizmu
     virtual ~TSPAlgorithm() {}
 
-    // Glowna metoda algorytmu – do zaimplementowania przez klasy pochodne.
-    // Przyjmuje graf, zapisuje najlepsza sciezke i jej koszt.
+    // do zaimplementowania przez klasy pochodne.
     virtual void solve(const Graph& graph) = 0;
 
-    // Zwraca nazwe algorytmu (do wyswietlania w menu i raportach)
+    // zwraca nazwe algorytmu
     virtual std::string getName() const = 0;
 
-    // Zwraca najlepsza znaleziona sciezke (sekwencje wierzcholkow)
+    // zwraca najlepsza znaleziona sciezke
     const std::vector<int>& getBestPath() const;
 
-    // Zwraca koszt najlepszej znalezionej sciezki
+    // zwraca koszt najlepszej znalezionej sciezki
     int getBestCost() const;
 
-    // Zwraca czas wykonania ostatniego solve() w nanosekundach
+    // zwraca czas wykonania ostatniego solve() w nanosekundach
     long long getLastExecutionTimeNs() const;
 
-    // Wyswietla wyniki: trase, koszt i czas wykonania
+    // wyswietla wyniki: trase, koszt i czas wykonania
     void printResults() const;
 
-    // Resetuje wyniki (sciezka, koszt, czas) do stanu poczatkowego
+    // resetuje wyniki (sciezka, koszt, czas)
     void reset();
 
 protected:
-    std::vector<int> bestPath;   // Najlepsza znaleziona sciezka
-    int bestCost;                // Koszt najlepszej sciezki
-    long long executionTimeNs;   // Czas wykonania w nanosekundach
+    std::vector<int> bestPath;   // najlepsza znaleziona sciezka
+    int bestCost;                // koszt najlepszej sciezki
+    long long executionTimeNs;   // czas wykonania w nanosekundach
 
-    // Oblicza koszt podanej sciezki w grafie.
-    // Sciezka musi byc pelnym cyklem (powrot do wierzcholka startowego).
-    // Zwraca INT_MAX jesli sciezka zawiera nielegalna krawedz (-1).
+    // oblicza koszt podanej sciezki w grafie.
     int calculatePathCost(const std::vector<int>& path, const Graph& graph) const;
 };

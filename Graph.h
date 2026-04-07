@@ -3,48 +3,42 @@
 #include <string>
 #include <random>
 
-// Klasa reprezentujaca asymetryczny graf skierowany jako macierz kosztow.
-// Przekatna macierzy zawiera wartosc -1 (brak polaczenia z samym soba).
-// Odleglosci sa liczbami calkowitymi.
+// klasa reprezentująca graf skierowany w postaci macierzy kosztów
+
 class Graph {
 public:
-    // Konstruktor domyslny - tworzy pusty graf
+    // inicjalizacja pustego obiektu grafu
     Graph();
 
-    // Konstruktor z rozmiarem - tworzy graf N x N
+    // graf o zadanym rozmiarze n i od razu przygotowujący dla niego struktury w pamięci
     explicit Graph(int n);
 
-    // Wczytuje macierz kosztow z pliku tekstowego.
-    // Format: pierwsza linia to N, kolejne N linii to wiersze macierzy
-    // (liczby oddzielone spacjami, -1 na przekatnej).
-    // Zwraca true jesli wczytanie sie powiodlo.
+    // wczytywanie danych wejściowych z pliku tekstowego;
     bool loadFromFile(const std::string& filename);
 
-    // Generuje losowa asymetryczna macierz kosztow rozmiaru n x n.
-    // Wagi krawedzi sa losowane z zakresu [minWeight, maxWeight].
-    // Przekatna ustawiana jest na -1.
+    // generuje losową, asymetryczną macierz kosztów
     void generateRandom(int n, int minWeight = 1, int maxWeight = 100);
 
-    // Wyswietla macierz kosztow w czytelnym formacie
+    // wyświetla zawartość macierzy kosztów
     void display() const;
 
-    // Zwraca koszt krawedzi (i -> j)
+    // zwraca koszt przejścia (wagę krawędzi) pomiędzy wskazanym wierzchołkiem początkowym a końcowym
     int getEdge(int from, int to) const;
 
-    // Zwraca rozmiar grafu (liczbe wierzcholkow)
+    // zwraca aktualny rozmiar grafu
     int getSize() const;
 
-    // Zwraca cala macierz kosztow (tylko do odczytu)
+    // udostępnia stałą referencję do wewnętrznej macierzy kosztów
     const std::vector<std::vector<int>>& getMatrix() const;
 
-    // Sprawdza czy graf zostal poprawnie zaladowany/wygenerowany
+    // sprawdza, czy graf został pomyślnie wczytany lub wygenerowany
     bool isValid() const;
 
 private:
-    int size;                             // Liczba wierzcholkow N
-    std::vector<std::vector<int>> matrix; // Macierz kosztow N x N
-    bool valid;                           // Flaga poprawnosci grafu
+    int size;                             // aktualna liczba miast (wierzchołków)
+    std::vector<std::vector<int>> matrix; // struktura przechowująca wagi krawędzi
+    bool valid;                           // stan gotowości obiektu do przeprowadzania obliczeń
 
-    // Inicjalizuje macierz rozmiaru n x n, przekatna = -1
+    // pamięć dla macierzy n x n i ustawiająca wartość -1 na jej głównej przekątnej
     void initMatrix(int n);
 };
